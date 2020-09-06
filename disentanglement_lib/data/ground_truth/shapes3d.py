@@ -18,6 +18,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 import os
+import h5py
 from disentanglement_lib.data.ground_truth import ground_truth_data
 from disentanglement_lib.data.ground_truth import util
 import numpy as np
