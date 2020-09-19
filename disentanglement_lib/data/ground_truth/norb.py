@@ -73,7 +73,7 @@ class SmallNORB(ground_truth_data.GroundTruthData):
 
   @property
   def observation_shape(self):
-    return [64, 64, 1]
+    return [64, 64, 3]
 
 
   def sample_factors(self, num, random_state):
@@ -83,8 +83,9 @@ class SmallNORB(ground_truth_data.GroundTruthData):
   def sample_observations_from_factors(self, factors, random_state):
     all_factors = self.state_space.sample_all_factors(factors, random_state)
     indices = self.index.features_to_index(all_factors)
-    return np.expand_dims(self.images[indices].astype(np.float32), axis=3)
-
+    images =  np.expand_dims(self.images[indices].astype(np.float32), axis=3)
+    images = np.repeat(images, 3, axis=3)
+    return images
 
 def _load_small_norb_chunks(path_template, chunk_names):
   """Loads several chunks of the small norb data set for final use."""

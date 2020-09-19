@@ -54,7 +54,7 @@ class DSprites(ground_truth_data.GroundTruthData):
     if latent_factor_indices is None:
       latent_factor_indices = list(range(6))
     self.latent_factor_indices = latent_factor_indices
-    self.data_shape = [64, 64, 1]
+    self.data_shape = [64, 64, 3]
     # Load the data so that we can sample from it.
     with gfile.Open(DSPRITES_PATH, "rb") as data_file:
       # Data was saved originally using python2, so we need to set the encoding.
@@ -92,7 +92,9 @@ class DSprites(ground_truth_data.GroundTruthData):
     """Sample a batch of observations X given a batch of factors Y."""
     all_factors = self.state_space.sample_all_factors(factors, random_state)
     indices = np.array(np.dot(all_factors, self.factor_bases), dtype=np.int64)
-    return np.expand_dims(self.images[indices].astype(np.float32), axis=3)
+    images = np.expand_dims(self.images[indices].astype(np.float32), axis=3)
+    images = np.repeat(images, 3, axis=3)
+    return images
 
   def _sample_factor(self, i, num, random_state):
     return random_state.randint(self.factor_sizes[i], size=num)
@@ -120,7 +122,7 @@ class ColorDSprites(DSprites):
   def sample_observations_from_factors(self, factors, random_state):
     no_color_observations = self.sample_observations_from_factors_no_color(
         factors, random_state)
-    observations = np.repeat(no_color_observations, 3, axis=3)
+#     observations = np.repeat(no_color_observations, 3, axis=3)
     color = np.repeat(
         np.repeat(
             random_state.uniform(0.5, 1, [observations.shape[0], 1, 1, 3]),
@@ -153,7 +155,7 @@ class NoisyDSprites(DSprites):
   def sample_observations_from_factors(self, factors, random_state):
     no_color_observations = self.sample_observations_from_factors_no_color(
         factors, random_state)
-    observations = np.repeat(no_color_observations, 3, axis=3)
+#     observations = np.repeat(no_color_observations, 3, axis=3)
     color = random_state.uniform(0, 1, [observations.shape[0], 64, 64, 3])
     return np.minimum(observations + color, 1.)
 
@@ -185,7 +187,7 @@ class ScreamDSprites(DSprites):
   def sample_observations_from_factors(self, factors, random_state):
     no_color_observations = self.sample_observations_from_factors_no_color(
         factors, random_state)
-    observations = np.repeat(no_color_observations, 3, axis=3)
+#     observations = np.repeat(no_color_observations, 3, axis=3)
 
     for i in range(observations.shape[0]):
       x_crop = random_state.randint(0, self.scream.shape[0] - 64)
