@@ -185,7 +185,7 @@ class ScreamDSprites(DSprites):
       self.scream = np.array(scream) * 1. / 255.
 
   def sample_observations_from_factors(self, factors, random_state):
-    no_color_observations = self.sample_observations_from_factors_no_color(
+    observations = self.sample_observations_from_factors_no_color(
         factors, random_state)
 #     observations = np.repeat(no_color_observations, 3, axis=3)
 
