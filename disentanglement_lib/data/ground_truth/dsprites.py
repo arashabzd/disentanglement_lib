@@ -130,7 +130,7 @@ class ColorDSprites(DSprites):
             axis=1),
         observations.shape[2],
         axis=2)
-    return observations * color
+    return (observations * color).astype(np.float32)
 
 
 class NoisyDSprites(DSprites):
@@ -153,7 +153,7 @@ class NoisyDSprites(DSprites):
     self.data_shape = [64, 64, 3]
 
   def sample_observations_from_factors(self, factors, random_state):
-    no_color_observations = self.sample_observations_from_factors_no_color(
+    observations = self.sample_observations_from_factors_no_color(
         factors, random_state)
 #     observations = np.repeat(no_color_observations, 3, axis=3)
     color = random_state.uniform(0, 1, [observations.shape[0], 64, 64, 3])
