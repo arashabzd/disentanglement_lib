@@ -157,7 +157,7 @@ class NoisyDSprites(DSprites):
         factors, random_state)
 #     observations = np.repeat(no_color_observations, 3, axis=3)
     color = random_state.uniform(0, 1, [observations.shape[0], 64, 64, 3])
-    return np.minimum(observations + color, 1.)
+    return np.minimum(observations + color, 1.).astype(np.float32)
 
 
 class ScreamDSprites(DSprites):
